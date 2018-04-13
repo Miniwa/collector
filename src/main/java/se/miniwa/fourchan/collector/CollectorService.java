@@ -82,6 +82,8 @@ public class CollectorService extends AbstractScheduledService {
                         logger.debug("Committing transaction..");
                         transaction.commit();
                         threadIterator.remove();
+                    } else {
+                        logger.debug("Waiting for thread to become archived.");
                     }
                 } catch (IOException e) {
                     if (e instanceof HttpResponseException && ((HttpResponseException)e).getStatusCode() == 404) {
