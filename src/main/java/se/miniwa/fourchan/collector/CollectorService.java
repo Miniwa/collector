@@ -62,29 +62,25 @@ public class CollectorService extends AbstractScheduledService {
                 int threadNumber = threadIterator.next();
                 try {
                     FourChanThread thread = client.getThread(board, threadNumber);
-                    if (thread.isArchived() || thread.isClosed()) {
-                        logger.debug(String.format("Collecting %d posts.", thread.getReplies().size() + 1));
+                    logger.debug(String.format("Collecting %d posts.", thread.getReplies().size() + 1));
 
-                        Session session = sessionFactory.openSession();
-                        Transaction transaction = session.beginTransaction();
-                        BoardDao boardDao = (BoardDao)session.createQuery("select * from board where name = :name")
-                                .setParameter("name", board).uniqueResult();
-                        ThreadDao threadDao = copyThread(boardDao, thread);
-                        PostDao opDao = copyPost(threadDao, thread.getOp());
-                        session.save(threadDao);
-                        session.save(opDao);
+                    Session session = sessionFactory.openSession();
+                    Transaction transaction = session.beginTransaction();
+                    BoardDao boardDao = (BoardDao)session.createQuery("FROM BoardDao board WHERE board.name = :name")
+                            .setParameter("name", board).uniqueResult();
+                    ThreadDao threadDao = copyThread(boardDao, thread);
+                    PostDao opDao = copyPost(threadDao, thread.getOp());
+                    session.save(threadDao);
+                    session.save(opDao);
 
-                        for (FourChanPost post : thread.getReplies()) {
-                            PostDao postDao = copyPost(threadDao, post);
-                            session.save(postDao);
-                        }
-
-                        logger.debug("Committing transaction..");
-                        transaction.commit();
-                        threadIterator.remove();
-                    } else {
-                        logger.debug("Waiting for thread to become archived.");
+                    for (FourChanPost post : thread.getReplies()) {
+                        PostDao postDao = copyPost(threadDao, post);
+                        session.save(postDao);
                     }
+
+                    logger.debug("Committing transaction..");
+                    transaction.commit();
+                    threadIterator.remove();
                 } catch (IOException e) {
                     if (e instanceof HttpResponseException && ((HttpResponseException)e).getStatusCode() == 404) {
                         logger.debug(String.format("Thread %s was removed by janitor.", threadNumber));
