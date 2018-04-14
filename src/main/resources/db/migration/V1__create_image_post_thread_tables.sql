@@ -26,7 +26,7 @@ CREATE TABLE thread (
 CREATE TABLE post (
     id SERIAL PRIMARY KEY,
     thread_id INTEGER NOT NULL REFERENCES Thread(Id),
-    number INTEGER NOT NULL,
+    number INTEGER NOT NULL UNIQUE,
     submitted_date TIMESTAMP NOT NULL,
     name TEXT NULL,
     tripcode TEXT NULL,

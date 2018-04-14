@@ -15,7 +15,7 @@ public class PostDao {
     @JoinColumn(name = "thread_id", nullable = false)
     private ThreadDao thread;
 
-    @Column(name = "number", nullable = false)
+    @Column(name = "number", nullable = false, unique = true)
     private int number;
 
     @Column(name = "submitted_date", nullable = false)
