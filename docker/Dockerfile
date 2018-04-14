@@ -1,6 +1,6 @@
 FROM openjdk:8
 
-COPY build/lib/collector-0.1.0-SNAPSHOT-uber.jar /opt/collector
+COPY build/libs/collector-0.1.0-SNAPSHOT-uber.jar /opt/collector/
 
 WORKDIR /opt/collector
 
