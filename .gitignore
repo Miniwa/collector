@@ -3,4 +3,8 @@ build/
 .gradle/
 logs/
 out/
+bin/
+.settings/
+.classpath
+.project    
 collector-cfg.xml
