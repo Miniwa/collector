@@ -16,6 +16,7 @@ import se.miniwa.fourchan.FourChanPost;
 import se.miniwa.fourchan.FourChanThread;
 import se.miniwa.fourchan.api.FourChanClient;
 
+import javax.persistence.PersistenceException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -88,8 +89,8 @@ public class CollectorService extends AbstractScheduledService {
                     } else {
                         logger.error("Could not retrieve thread.", e);
                     }
-                } catch (HibernateException e) {
-                    logger.error("Could not save data.", e);
+                } catch (PersistenceException e) {
+                    logger.warn("Could not save data.", e);
                 }
             }
         }

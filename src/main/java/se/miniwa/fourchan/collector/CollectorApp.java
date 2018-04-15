@@ -51,6 +51,7 @@ public class CollectorApp {
             collectorService.awaitTerminated();
         } catch (Throwable e) {
             logger.error("Unhandled exception in main thread.", e);
+            System.exit(1);
         }
     }
 
